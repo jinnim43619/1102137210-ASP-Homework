@@ -8,14 +8,18 @@
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
     <title>Index</title>
 </head>
 <body>
 @using (Html.BeginForm("Index", "Order", FormMethod.Post, new { id = "Form1" }))
 {
     <div>
-        訂單查詢
-        <table border="1">
+        <h1>訂單查詢</h1>
+
+        <table class="table table-bordered table-striped">
             <tr>
                 <td>訂單編號</td>
                 <td>@Html.TextBoxFor(model => model.OrderID)</td>
@@ -46,7 +50,7 @@
                 <td></td>
                 <td>
                     <input type="submit" value="查詢" />
-                    <input type="submit" value="清除" />
+                    <input type="reset" value="清除" />
                     <input type="submit" value="新增訂單" />
                 </td>
             </tr>
@@ -58,6 +62,7 @@
 
         @if (ViewBag.Order != null)
         {
+            <h1>查詢結果</h1>
             <table class="table table-bordered table-striped">
                 <tr>
                     <td>訂單編號</td>
@@ -74,7 +79,8 @@
                         <td>@item.CompanyName</td>
                         <td>@item.OrderDate</td>
                         <td>@item.ShippedDate</td>
-                        
+                        <td>修改</td>
+                        <td>刪除</td>
                     </tr>
                 }
 
