@@ -55,7 +55,24 @@ namespace _1102137210.Models
             }
             return this.MapCodeData(dt);
         }
-
+        /// <summary>
+        /// 取得客戶資料
+        /// </summary>
+        /// <returns></returns>
+        public List<SelectListItem> GetCus()
+        {
+            DataTable dt = new DataTable();
+            string sql = @"Select CustomerID As CodeId,CompanyName As CodeName FROM Sales.Customers";
+            using (SqlConnection conn = new SqlConnection(this.GetDBConnectionString()))
+            {
+                conn.Open();
+                SqlCommand cmd = new SqlCommand(sql, conn);
+                SqlDataAdapter sqlAdapter = new SqlDataAdapter(cmd);
+                sqlAdapter.Fill(dt);
+                conn.Close();
+            }
+            return this.MapCodeData(dt);
+        }
         /// <summary>
         /// Maping 代碼資料
         /// </summary>

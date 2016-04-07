@@ -1,0 +1,72 @@
+﻿@model _1102137210.Models.Orders
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>InsertOrder</title>
+</head>
+<body>
+    <table>
+        <tr>
+            <td>客戶名稱</td>
+            <td>@Html.DropDownListFor(model => model.CustomerID, (List<SelectListItem>)ViewBag.CusData)</td>
+        </tr>
+        <tr>
+            <td>負責員工名稱</td>
+            <td>@Html.DropDownListFor(model => model.EmployeeID, (List<SelectListItem>)ViewBag.EmpData)</td>
+        </tr>
+        <tr>
+            <td>訂購日期</td>
+            <td>@Html.TextBoxFor(model => model.OrderDate, new { @type = "date" })</td>
+            <td>需要日期</td>
+            <td>@Html.TextBoxFor(model => model.RequiredDate, new { @type = "date" })</td>
+        </tr>
+        <tr>
+            <td>出貨日期</td>
+            <td>@Html.TextBoxFor(model => model.ShippedDate, new { @type = "date" })</td>
+        </tr>
+        <tr>
+            <td>出貨公司名稱</td>
+            <td>@Html.DropDownListFor(model => model.ShipperID, (List<SelectListItem>)ViewBag.ShipperData)</td>
+        </tr>
+        <tr>
+            <td>運費</td>
+            <td>@Html.TextBoxFor(model => model.Freight)</td>
+        </tr>
+        <tr>
+            <td>出貨國家</td>
+            <td>@Html.TextBoxFor(model => model.ShipCountry)</td>
+            <td>出貨城市</td>
+            <td>@Html.TextBoxFor(model => model.ShipCity)</td>
+        </tr>
+        <tr>
+            <td>出貨地區</td>
+            <td>@Html.TextBoxFor(model => model.ShipRegion)</td>
+            <td>郵遞區號</td>
+            <td>@Html.TextBoxFor(model => model.ShipPostalCode)</td>
+        </tr>
+        <tr>
+            <td>出貨地址</td>
+            <td>@Html.TextBoxFor(model => model.ShipAddress)</td>
+            <td>出貨說明</td>
+            <td>@Html.TextBoxFor(model => model.ShipName)</td>
+        </tr>
+        <tr>
+            <td>訂單金額總計</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>
+            <input type="submit" value="存檔" />
+            <input type="submit" value="回上一頁" />
+            </td>
+        </tr>
+    </table>
+</body>
+</html>
