@@ -6,7 +6,10 @@
 //     如果重新產生程式碼，將會覆寫對這個檔案的手動變更。
 // </auto-generated>
 //------------------------------------------------------------------------------
-
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
 namespace _1102137210.Models
 {
     using System;

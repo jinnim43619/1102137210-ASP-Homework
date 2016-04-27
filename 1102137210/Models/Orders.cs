@@ -15,11 +15,15 @@ namespace _1102137210.Models
     public partial class Orders
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+
         public Orders()
-        {
-            this.OrderDetails = new HashSet<OrderDetails>();
+        {      
+            var ods = new List<Models.OrderDetails>();
+            ods.Add(new OrderDetails() { ProductID = 58});
+            this.OrderDetails = ods;  
         }
-    
+
+        public List<Models.OrderDetails> OrderDetails { get; set; }
         public int OrderID { get; set; }
         public Nullable<int> CustomerID { get; set; }
         public int EmployeeID { get; set; }
@@ -41,7 +45,6 @@ namespace _1102137210.Models
         public virtual Employees Employees { get; set; }
         public virtual Customers Customers { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<OrderDetails> OrderDetails { get; set; }
         public virtual Shippers Shippers { get; set; }
     }
 }

@@ -51,7 +51,7 @@
                 <td>
                     <input type="submit" value="查詢" />
                     <input type="reset" value="清除" />
-                    <input type="submit" value="新增訂單" />
+                    @Html.ActionLink("新增訂單", "InsertOrder")
                 </td>
             </tr>
         </table>
@@ -80,7 +80,10 @@
                         <td>@item.OrderDate</td>
                         <td>@item.ShippedDate</td>
                         <td>修改</td>
-                        <td>刪除</td>
+                        <td>
+                        <a class="btnDelete" href="#">刪除</a>
+                        <input class="hidOrderId" type="hidden" value='@item.OrderID' />
+                        </td>
                     </tr>
                 }
 
@@ -88,5 +91,24 @@
         }
     </div>
 }
+    <script type="text/javascript">
+
+
+    $(".btnDelete").click(function (e) {
+
+        var tr = $(this).closest('tr')
+        $.ajax({
+            type: "POST",
+            url: "/../Order/DeleteOrder",
+            data: "DeleteOrderId=" + $(this).next().val(),
+            dataType: "json",
+            success: function (response) {
+                $(tr).remove();
+            }
+        });
+        return false;
+    });
+
+    </script>
 </body>
 </html>

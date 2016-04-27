@@ -11,50 +11,79 @@
     <title>InsertOrder</title>
 </head>
 <body>
+@using (Html.BeginForm("InsertOrder", "Order", FormMethod.Post, new { id = "Form2" }))
+{
     <table>
+
         <tr>
             <td>客戶名稱</td>
-            <td>@Html.DropDownListFor(model => model.CustomerID, (List<SelectListItem>)ViewBag.CusData)</td>
+            <td>
+            @Html.DropDownListFor(model => model.CustomerID, (List<SelectListItem>)ViewBag.CusData)
+            </td>
         </tr>
         <tr>
             <td>負責員工名稱</td>
-            <td>@Html.DropDownListFor(model => model.EmployeeID, (List<SelectListItem>)ViewBag.EmpData)</td>
+            <td>
+            @Html.DropDownListFor(model => model.EmployeeID, (List<SelectListItem>)ViewBag.EmpData)
+            </td>
         </tr>
         <tr>
             <td>訂購日期</td>
-            <td>@Html.TextBoxFor(model => model.OrderDate, new { @type = "date" })</td>
+            <td>
+            @Html.TextBoxFor(model => model.OrderDate, new { @type = "date" })
+            </td>
             <td>需要日期</td>
-            <td>@Html.TextBoxFor(model => model.RequiredDate, new { @type = "date" })</td>
+            <td>
+            @Html.TextBoxFor(model => model.RequiredDate, new { @type = "date" })
+            </td>
         </tr>
         <tr>
             <td>出貨日期</td>
-            <td>@Html.TextBoxFor(model => model.ShippedDate, new { @type = "date" })</td>
+            <td>
+            @Html.TextBoxFor(model => model.ShippedDate, new { @type = "date" })
+            </td>
         </tr>
         <tr>
             <td>出貨公司名稱</td>
-            <td>@Html.DropDownListFor(model => model.ShipperID, (List<SelectListItem>)ViewBag.ShipperData)</td>
+            <td>
+            @Html.DropDownListFor(model => model.ShipperID, (List<SelectListItem>)ViewBag.ShipperData)
+            </td>
         </tr>
         <tr>
             <td>運費</td>
-            <td>@Html.TextBoxFor(model => model.Freight)</td>
+            <td>
+            @Html.TextBoxFor(model => model.Freight)
+            </td>
         </tr>
         <tr>
             <td>出貨國家</td>
-            <td>@Html.TextBoxFor(model => model.ShipCountry)</td>
+            <td>
+            @Html.TextBoxFor(model => model.ShipCountry)
+            </td>
             <td>出貨城市</td>
-            <td>@Html.TextBoxFor(model => model.ShipCity)</td>
+            <td>
+            @Html.TextBoxFor(model => model.ShipCity)
+            </td>
         </tr>
         <tr>
             <td>出貨地區</td>
-            <td>@Html.TextBoxFor(model => model.ShipRegion)</td>
+            <td>
+            @Html.TextBoxFor(model => model.ShipRegion)
+            </td>
             <td>郵遞區號</td>
-            <td>@Html.TextBoxFor(model => model.ShipPostalCode)</td>
+            <td>
+            @Html.TextBoxFor(model => model.ShipPostalCode)
+            </td>
         </tr>
         <tr>
             <td>出貨地址</td>
-            <td>@Html.TextBoxFor(model => model.ShipAddress)</td>
+            <td>
+            @Html.TextBoxFor(model => model.ShipAddress)
+            </td>
             <td>出貨說明</td>
-            <td>@Html.TextBoxFor(model => model.ShipName)</td>
+            <td>
+            @Html.TextBoxFor(model => model.ShipName)
+            </td>
         </tr>
         <tr>
             <td>訂單金額總計</td>
@@ -63,10 +92,61 @@
         <tr>
             <td></td>
             <td>
-            <input type="submit" value="存檔" />
-            <input type="submit" value="回上一頁" />
+                <input type="submit" value="存檔" />
+                @Html.ActionLink("回前一頁", "Index")
             </td>
         </tr>
     </table>
+    @*<a id="addNewDetial" href="#">新增一筆</a>
+    <table class="table table-bordered">
+        <tr>
+            <td>商品</td>
+            <td>單價</td>
+            <td>數量</td>
+            <td>小計</td>
+            <td></td>
+        </tr>
+        
+        <tbody id="tbContent">
+            @for (int i = 0; i < Model.OrderDetails.Count; i++)
+            {
+                <tr>
+                    <td>@Html.DropDownListFor(m => Model.OrderDetails[i].ProductID, (List<SelectListItem>)ViewBag.ProductData, new { @class = "ProductId" })</td>
+                    <td>@Html.TextBoxFor(m => Model.OrderDetails[i].UnitPrice, new { @class = "UnitPrice" })</td>
+                    <td>@Html.TextBoxFor(m => Model.OrderDetails[i].Qty, new { @class = "Qty" })</td>
+                    <td></td>
+                    <td><button type="button" class="btnRemove">取消</button></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+}
+@section scripts{
+    <script type="text/javascript">
+        //明細資料範本
+        var trtemplate = $('#tbContent tr').eq(0).html();
+
+        //新增一列名資料
+        $("#addNewDetial").click(function (e) {
+            $('#tbContent').append('<tr>' + trtemplate + '</tr>');
+        });
+
+        //移除TR
+        $('#tbContent').on('click', '.btnRemove', function () {
+            if ($('#tbContent tr').length > 1)
+                $(this).closest('tr').remove();
+        });
+
+        //表單送出前置換element name 讓Action 可以讀到OrderDetials
+        $('form').submit(function () {
+            for (var i = 0 ; i < $('#tbContent tr').length; i++) {
+                $('.ProductId').eq(i).attr('name', 'OrderDetails[' + i + '].ProductID');
+                $('.Qty').eq(i).attr('name', 'OrderDetails[' + i + '].Qty');
+                $('.UnitPrice').eq(i).attr('name', 'OrderDetails[' + i + '].UnitPrice');
+            }
+        });
+    </script>*@
+}
 </body>
 </html>

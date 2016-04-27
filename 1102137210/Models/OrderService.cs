@@ -88,5 +88,88 @@ namespace _1102137210.Models
             }
             return result;
         }
+        /// <summary>
+        /// 刪除訂單
+        /// </summary>
+        /// <param name="DeleteOrderId"></param>
+        public void DeleteOrderById(string DeleteOrderId)
+        {
+            try
+            {
+                string sql = "Delete FROM Sales.OrderDetails Where OrderID=@DeleteOrderId";
+                using (SqlConnection conn = new SqlConnection(this.GetDBConnectionString()))
+                {
+                    conn.Open();
+                    SqlCommand cmd = new SqlCommand(sql, conn);
+                    cmd.Parameters.Add(new SqlParameter("@DeleteOrderId", DeleteOrderId));
+                    cmd.ExecuteNonQuery();
+                    conn.Close();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            try
+            {
+                string sql = "Delete FROM Sales.Orders Where OrderID=@DeleteOrderId";
+                using (SqlConnection conn = new SqlConnection(this.GetDBConnectionString()))
+                {
+                    conn.Open();
+                    SqlCommand cmd = new SqlCommand(sql, conn);
+                    cmd.Parameters.Add(new SqlParameter("@DeleteOrderId", DeleteOrderId));
+                    cmd.ExecuteNonQuery();
+                    conn.Close();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+        }
+        /// <summary>
+        /// 新增訂單
+        /// </summary>
+        /// <param name="order"></param>
+        /// <returns></returns>
+        public int InsertOrder(Models.Orders order)
+        {
+            string sql = @" Insert INTO Sales.Orders
+						 (
+							CustomerID,EmployeeID,OrderDate,RequiredDate,ShippedDate,ShipperID,Freight,
+							ShipName,ShipAddress,ShipCity,ShipRegion,ShipPostalCode,ShipCountry
+						)
+						VALUES
+						(
+							@CustomerID,@EmployeeID,@OrderDate,@RequiredDate,@ShippedDate,@ShipperID,@Freight,
+							@ShipName,@ShipAddress,@ShipCity,@ShipRegion,@ShipPostalCode,@ShipCountry
+						)
+						";
+            int orderId;
+            using (SqlConnection conn = new SqlConnection(this.GetDBConnectionString()))
+            {
+                conn.Open();
+                SqlCommand cmd = new SqlCommand(sql, conn);
+                cmd.Parameters.Add(new SqlParameter("@CustomerID", order.CustomerID));
+                cmd.Parameters.Add(new SqlParameter("@EmployeeID", order.EmployeeID));
+                cmd.Parameters.Add(new SqlParameter("@OrderDate", order.OrderDate));
+                cmd.Parameters.Add(new SqlParameter("@RequiredDate", order.RequiredDate));
+                cmd.Parameters.Add(new SqlParameter("@ShippedDate", order.ShippedDate));
+                cmd.Parameters.Add(new SqlParameter("@ShipperID", order.ShipperID));
+                cmd.Parameters.Add(new SqlParameter("@Freight", order.Freight));
+                cmd.Parameters.Add(new SqlParameter("@ShipperName", order.ShipperName));
+                cmd.Parameters.Add(new SqlParameter("@ShipAddress", order.ShipAddress));
+                cmd.Parameters.Add(new SqlParameter("@ShipCity", order.ShipCity));
+                cmd.Parameters.Add(new SqlParameter("@ShipRegion", order.ShipRegion));
+                cmd.Parameters.Add(new SqlParameter("@ShipPostalCode", order.ShipPostalCode));
+                cmd.Parameters.Add(new SqlParameter("@ShipCountry", order.ShipCountry));
+
+                orderId = (int)cmd.ExecuteScalar();
+                conn.Close();
+            }
+            return orderId;
+
+        }
     }
 }

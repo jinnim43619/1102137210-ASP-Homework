@@ -14,5 +14,6 @@ namespace _1102137210.Models
         public string OrderDate { get; set; }
         public string ShippedDate { get; set; }
         public string RequiredDate { get; set; }
+        public string DeleteOrderId { get; set; }
     }
 }
