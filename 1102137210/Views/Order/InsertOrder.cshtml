@@ -1,6 +1,6 @@
-﻿@model _1102137210.Models.Orders
+﻿@model _1102137210.Models.Order
 @{
-    Layout = null;
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <!DOCTYPE html>
@@ -8,12 +8,14 @@
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />
+
     <title>InsertOrder</title>
 </head>
+
 <body>
 @using (Html.BeginForm("InsertOrder", "Order", FormMethod.Post, new { id = "Form2" }))
 {
-    <table>
+    <table class="table table-bordered table-striped">
 
         <tr>
             <td>客戶名稱</td>
@@ -97,8 +99,8 @@
             </td>
         </tr>
     </table>
-    @*<a id="addNewDetial" href="#">新增一筆</a>
-    <table class="table table-bordered">
+    <a id="addNewDetial" href="#">新增一筆</a>
+    <table class="table table-bordered table-striped">
         <tr>
             <td>商品</td>
             <td>單價</td>
@@ -111,7 +113,7 @@
             @for (int i = 0; i < Model.OrderDetails.Count; i++)
             {
                 <tr>
-                    <td>@Html.DropDownListFor(m => Model.OrderDetails[i].ProductID, (List<SelectListItem>)ViewBag.ProductData, new { @class = "ProductId" })</td>
+                    <td>@Html.DropDownListFor(m => Model.OrderDetails[i].ProductID, (List<SelectListItem>)ViewBag.ProductData, new { @class = "ProductID" })</td>
                     <td>@Html.TextBoxFor(m => Model.OrderDetails[i].UnitPrice, new { @class = "UnitPrice" })</td>
                     <td>@Html.TextBoxFor(m => Model.OrderDetails[i].Qty, new { @class = "Qty" })</td>
                     <td></td>
@@ -123,6 +125,7 @@
 
 }
 @section scripts{
+
     <script type="text/javascript">
         //明細資料範本
         var trtemplate = $('#tbContent tr').eq(0).html();
@@ -141,12 +144,13 @@
         //表單送出前置換element name 讓Action 可以讀到OrderDetials
         $('form').submit(function () {
             for (var i = 0 ; i < $('#tbContent tr').length; i++) {
-                $('.ProductId').eq(i).attr('name', 'OrderDetails[' + i + '].ProductID');
+                $('.ProductID').eq(i).attr('name', 'OrderDetails[' + i + '].ProductID');
                 $('.Qty').eq(i).attr('name', 'OrderDetails[' + i + '].Qty');
                 $('.UnitPrice').eq(i).attr('name', 'OrderDetails[' + i + '].UnitPrice');
             }
         });
-    </script>*@
+    </script>
 }
 </body>
+
 </html>

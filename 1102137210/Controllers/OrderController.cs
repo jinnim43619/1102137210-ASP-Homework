@@ -9,6 +9,8 @@ namespace _1102137210.Controllers
     public class OrderController : Controller
     {
         Models.GetInfo GetInfo = new Models.GetInfo();
+        Models.OrderService OrderService = new Models.OrderService();
+
         // GET: Order
         /// <summary>
         /// 訂單首頁
@@ -44,7 +46,7 @@ namespace _1102137210.Controllers
             ViewBag.CusData = this.GetInfo.GetCus();
             ViewBag.ShipperData = this.GetInfo.GetShipper();
             ViewBag.ProductData = this.GetInfo.GetProduct();
-            return View(new Models.Orders());
+            return View(new Models.Order());
         }
         /// <summary>
         /// 新增訂單結果
@@ -52,11 +54,11 @@ namespace _1102137210.Controllers
         /// <param name="order"></param>
         /// <returns></returns>
         [HttpPost()]
-        public ActionResult InsertOrder(Models.Orders order)
+        public ActionResult InsertOrder(Models.Order order)
         {
             if (ModelState.IsValid)
             {
-
+                OrderService.InsertOrder(order);
                 return RedirectToAction("Index");
 
             }
@@ -72,8 +74,7 @@ namespace _1102137210.Controllers
         {
             try
             {
-                Models.OrderService orderService = new Models.OrderService();
-                orderService.DeleteOrderById(DeleteOrderId);
+                OrderService.DeleteOrderById(DeleteOrderId);
                 return this.Json(true);
             }
             catch (Exception)

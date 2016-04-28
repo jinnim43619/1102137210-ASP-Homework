@@ -22,7 +22,7 @@ namespace _1102137210.Models
 		/// 依照條件取得訂單資料
 		/// </summary>
 		/// <returns></returns>
-		public List<Orders> GetOrderByCondtioin(Models.OrderSearchCondition a)
+		public List<Order> GetOrderByCondtioin(Models.OrderSearchCondition a)
         {
 
             DataTable dt = new DataTable();
@@ -67,21 +67,21 @@ namespace _1102137210.Models
             return this.MapOrderDataToList(dt);
         }
 
-        private List<Models.Orders> MapOrderDataToList(DataTable orderData)
+        private List<Models.Order> MapOrderDataToList(DataTable orderData)
         {
-            List<Models.Orders> result = new List<Orders>();
+            List<Models.Order> result = new List<Order>();
 
 
             foreach (DataRow row in orderData.Rows)
             {
-                result.Add(new Orders()
+                result.Add(new Order()
                 {
-                    OrderID = (int)row["OrderId"],
+                    OrderID = (int)row["OrderID"],
                     OrderDate= row["OrderDate"].ToString(),
                     RequiredDate = row["RequiredDate"].ToString(),
                     ShippedDate = row["ShippedDate"].ToString(),
                     EmpName = row["EmpName"].ToString(),
-                    ShipperName= row["ShipperName"].ToString(),
+                    ShipperName = row["ShipperName"].ToString(),
                     CompanyName=row["CompanyName"].ToString()
 
                 });
@@ -133,7 +133,7 @@ namespace _1102137210.Models
         /// </summary>
         /// <param name="order"></param>
         /// <returns></returns>
-        public int InsertOrder(Models.Orders order)
+        public int InsertOrder(Models.Order order)
         {
             string sql = @" Insert INTO Sales.Orders
 						 (
@@ -146,7 +146,6 @@ namespace _1102137210.Models
 							@ShipName,@ShipAddress,@ShipCity,@ShipRegion,@ShipPostalCode,@ShipCountry
 						)
 						";
-            int orderId;
             using (SqlConnection conn = new SqlConnection(this.GetDBConnectionString()))
             {
                 conn.Open();
@@ -154,21 +153,21 @@ namespace _1102137210.Models
                 cmd.Parameters.Add(new SqlParameter("@CustomerID", order.CustomerID));
                 cmd.Parameters.Add(new SqlParameter("@EmployeeID", order.EmployeeID));
                 cmd.Parameters.Add(new SqlParameter("@OrderDate", order.OrderDate));
-                cmd.Parameters.Add(new SqlParameter("@RequiredDate", order.RequiredDate));
+                cmd.Parameters.Add(new SqlParameter("@RequiredDate",order.RequiredDate));
                 cmd.Parameters.Add(new SqlParameter("@ShippedDate", order.ShippedDate));
                 cmd.Parameters.Add(new SqlParameter("@ShipperID", order.ShipperID));
                 cmd.Parameters.Add(new SqlParameter("@Freight", order.Freight));
-                cmd.Parameters.Add(new SqlParameter("@ShipperName", order.ShipperName));
+                cmd.Parameters.Add(new SqlParameter("@ShipName", order.ShipName));
                 cmd.Parameters.Add(new SqlParameter("@ShipAddress", order.ShipAddress));
                 cmd.Parameters.Add(new SqlParameter("@ShipCity", order.ShipCity));
                 cmd.Parameters.Add(new SqlParameter("@ShipRegion", order.ShipRegion));
                 cmd.Parameters.Add(new SqlParameter("@ShipPostalCode", order.ShipPostalCode));
                 cmd.Parameters.Add(new SqlParameter("@ShipCountry", order.ShipCountry));
 
-                orderId = (int)cmd.ExecuteScalar();
+
                 conn.Close();
             }
-            return orderId;
+            return 0;
 
         }
     }
