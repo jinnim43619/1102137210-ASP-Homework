@@ -114,9 +114,9 @@
             {
                 <tr>
                     <td>@Html.DropDownListFor(m => Model.OrderDetails[i].ProductID, (List<SelectListItem>)ViewBag.ProductData, new { @class = "ProductID" })</td>
-                    <td>@Html.TextBoxFor(m => Model.OrderDetails[i].UnitPrice, new { @class = "UnitPrice" })</td>
-                    <td>@Html.TextBoxFor(m => Model.OrderDetails[i].Qty, new { @class = "Qty" })</td>
-                    <td></td>
+                    <td>@Html.TextBoxFor(m => Model.OrderDetails[i].UnitPrice,new { @class = "UnitPrice" })</td>
+                    <td>@Html.TextBoxFor(m => Model.OrderDetails[i].Qty,new { @class = "Qty" })</td>
+                    <td type="text" id="sum" disabled></td>
                     <td><button type="button" class="btnRemove">取消</button></td>
                 </tr>
             }
@@ -149,6 +149,20 @@
                 $('.UnitPrice').eq(i).attr('name', 'OrderDetails[' + i + '].UnitPrice');
             }
         });
+
+        $("#ProductID").change(function (e) {
+            $.ajax({
+                type: "POST",
+                url: "/Order/GetPrice",
+                data: "ProductID=" + $("#ProductID").val(),
+                dataType: "json",
+                success: function (response) {
+                    $("#UnitPrice").val(response.UnitPrice);
+                }
+            });
+            return false;
+        });
+            
     </script>
 }
 </body>

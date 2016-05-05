@@ -1,6 +1,6 @@
 ﻿@model _1102137210.Models.OrderSearchCondition
 @{
-    Layout = null;
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <!DOCTYPE html>
@@ -8,9 +8,6 @@
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />
-    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
-    <script src="~/Scripts/bootstrap.min.js"></script>
-    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
     <title>Index</title>
 </head>
 <body>
@@ -94,20 +91,20 @@
     <script type="text/javascript">
 
 
-    $(".btnDelete").click(function (e) {
-
-        var tr = $(this).closest('tr')
-        $.ajax({
-            type: "POST",
-            url: "/../Order/DeleteOrder",
-            data: "DeleteOrderId=" + $(this).next().val(),
-            dataType: "json",
-            success: function (response) {
-                $(tr).remove();
-            }
+        $(".btnDelete").click(function (e) {
+            debugger;
+            var tr = $(this).closest('tr')
+            $.ajax({
+                type: "POST",
+                url: "/Order/DeleteOrder",
+                data: "DeleteOrderId=" + $(this).next().val(),
+                dataType: "json",
+                success: function (response) {
+                    $(tr).remove();
+                }
+            });
+            return false;
         });
-        return false;
-    });
 
     </script>
 </body>

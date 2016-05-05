@@ -10,6 +10,7 @@ namespace _1102137210.Controllers
     {
         Models.GetInfo GetInfo = new Models.GetInfo();
         Models.OrderService OrderService = new Models.OrderService();
+        Models.GetProductInfo GetProductInfo = new Models.GetProductInfo();
 
         // GET: Order
         /// <summary>
@@ -75,6 +76,27 @@ namespace _1102137210.Controllers
             try
             {
                 OrderService.DeleteOrderById(DeleteOrderId);
+                return this.Json(true);
+            }
+            catch (Exception)
+            {
+
+                return this.Json(false);
+            }
+
+
+        }
+        /// <summary>
+        /// 取得商品單價
+        /// </summary>
+        /// <param name="ProductID"></param>
+        /// <returns></returns>
+        [HttpPost()]
+        public JsonResult GetPrice(string ProductID)
+        {
+            try
+            {
+                GetProductInfo.GetPrice(ProductID);
                 return this.Json(true);
             }
             catch (Exception)
