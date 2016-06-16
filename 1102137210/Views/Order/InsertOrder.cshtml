@@ -15,6 +15,8 @@
 <body>
     @using (Html.BeginForm("InsertOrder", "Order", FormMethod.Post, new { id = "Form2" }))
     {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true)
         <div id="InsertOrder">
             <h1>新增訂單</h1>
             <table class="table table-bordered table-striped">
@@ -115,7 +117,7 @@
                 </tr>
             </table>
         </div>
-            <div id="InsertOrderDetail">
+            @*<div id="InsertOrderDetail">
                 <a id="addNewDetial" href="#">新增一筆</a>
                 <table class="table table-bordered table-striped">
                     <tr>
@@ -141,7 +143,7 @@
                         }
                     </tbody>
                 </table>
-            </div>
+            </div>*@
     }
     @section scripts{
 

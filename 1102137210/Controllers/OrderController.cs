@@ -68,7 +68,7 @@ namespace _1102137210.Controllers
                 try
                 {
                     OrderService.InsertOrder(order);
-                    return RedirectToAction("InsertIndex");
+                    return RedirectToAction("InsertOrder");
                 }
                 catch (Exception ex)
                 {
@@ -76,7 +76,7 @@ namespace _1102137210.Controllers
                 }
 
             }
-            return RedirectToAction("InsertIndex");
+            return RedirectToAction("InsertOrder");
         }
             
         /// <summary>
