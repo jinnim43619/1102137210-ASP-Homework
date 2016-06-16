@@ -3,6 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Data;
+using System.Data.SqlClient;
+using System.Configuration;
+using _1102137210.Models;
 
 namespace _1102137210.Controllers
 {
@@ -43,8 +47,9 @@ namespace _1102137210.Controllers
         /// <returns></returns>
         public ActionResult InsertOrder()
         {
+            List<SelectListItem> CustomersData = this.GetInfo.GetCus();
+            ViewBag.Cusdata = CustomersData;
             ViewBag.EmpData = this.GetInfo.GetEmp();
-            ViewBag.CusData = this.GetInfo.GetCus();
             ViewBag.ShipperData = this.GetInfo.GetShipper();
             ViewBag.ProductData = this.GetInfo.GetProduct();
             return View(new Models.Order());
@@ -59,12 +64,21 @@ namespace _1102137210.Controllers
         {
             if (ModelState.IsValid)
             {
-                OrderService.InsertOrder(order);
-                return RedirectToAction("Index");
+
+                try
+                {
+                    OrderService.InsertOrder(order);
+                    return RedirectToAction("InsertIndex");
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
 
             }
-            return View(order);
+            return RedirectToAction("InsertIndex");
         }
+            
         /// <summary>
         /// 刪除訂單
         /// </summary>

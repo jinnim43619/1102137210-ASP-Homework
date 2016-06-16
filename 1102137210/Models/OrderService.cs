@@ -135,16 +135,9 @@ namespace _1102137210.Models
         /// <returns></returns>
         public int InsertOrder(Models.Order order)
         {
-            string sql = @" Insert INTO Sales.Orders
-						 (
-							CustomerID,EmployeeID,OrderDate,RequiredDate,ShippedDate,ShipperID,Freight,
-							ShipName,ShipAddress,ShipCity,ShipRegion,ShipPostalCode,ShipCountry
-						)
-						VALUES
-						(
-							@CustomerID,@EmployeeID,@OrderDate,@RequiredDate,@ShippedDate,@ShipperID,@Freight,
-							@ShipName,@ShipAddress,@ShipCity,@ShipRegion,@ShipPostalCode,@ShipCountry
-						)
+            string sql = @" INSERT INTO Sales.Orders
+                           (CustomerID,EmployeeID,OrderDate,RequiredDate,ShippedDate,ShipperID,Freight,ShipName,ShipAddress,ShipCity,ShipRegion,ShipPostalCode,ShipCountry) 
+                           VALUES (@CustomerID,@EmployeeID,@OrderDate,@RequiredDate,@ShippedDate,@ShipperID,@Freight,@ShipName,@ShipAddress,@ShipCity,@ShipRegion,@ShipPostalCode,@ShipCountry)
 						";
             using (SqlConnection conn = new SqlConnection(this.GetDBConnectionString()))
             {
