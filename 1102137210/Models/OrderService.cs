@@ -135,34 +135,109 @@ namespace _1102137210.Models
         /// <returns></returns>
         public int InsertOrder(Models.Order order)
         {
-            string sql = @" INSERT INTO Sales.Orders
+            string sql = @"INSERT INTO Sales.Orders
                            (CustomerID,EmployeeID,OrderDate,RequiredDate,ShippedDate,ShipperID,Freight,ShipName,ShipAddress,ShipCity,ShipRegion,ShipPostalCode,ShipCountry) 
                            VALUES (@CustomerID,@EmployeeID,@OrderDate,@RequiredDate,@ShippedDate,@ShipperID,@Freight,@ShipName,@ShipAddress,@ShipCity,@ShipRegion,@ShipPostalCode,@ShipCountry)
-						";
+                           Select SCOPE_IDENTITY()";
+            string sql2 = @"INSERT INTO Sales.OrderDetails
+                           (OrderID,ProductID,UnitPrice,Qty) 
+                           VALUES (@OrderID,@ProductID,@UnitPrice,@Qty)";
+            string OrderID;
             using (SqlConnection conn = new SqlConnection(this.GetDBConnectionString()))
             {
                 conn.Open();
-                SqlCommand cmd = new SqlCommand(sql, conn);
-                cmd.Parameters.Add(new SqlParameter("@CustomerID", order.CustomerID));
-                cmd.Parameters.Add(new SqlParameter("@EmployeeID", order.EmployeeID));
-                cmd.Parameters.Add(new SqlParameter("@OrderDate", order.OrderDate));
-                cmd.Parameters.Add(new SqlParameter("@RequiredDate",order.RequiredDate));
-                cmd.Parameters.Add(new SqlParameter("@ShippedDate", order.ShippedDate));
-                cmd.Parameters.Add(new SqlParameter("@ShipperID", order.ShipperID));
-                cmd.Parameters.Add(new SqlParameter("@Freight", order.Freight));
-                cmd.Parameters.Add(new SqlParameter("@ShipName", order.ShipName));
-                cmd.Parameters.Add(new SqlParameter("@ShipAddress", order.ShipAddress));
-                cmd.Parameters.Add(new SqlParameter("@ShipCity", order.ShipCity));
-                cmd.Parameters.Add(new SqlParameter("@ShipRegion", order.ShipRegion));
-                cmd.Parameters.Add(new SqlParameter("@ShipPostalCode", order.ShipPostalCode));
-                cmd.Parameters.Add(new SqlParameter("@ShipCountry", order.ShipCountry));
+                SqlCommand command = new SqlCommand(sql, conn);
+                SqlCommand command2 = new SqlCommand(sql2, conn);
+                command.Parameters.Add(new SqlParameter("@CustomerID", order.CustomerID));
+                command.Parameters.Add(new SqlParameter("@EmployeeID", order.EmployeeID));
+                command.Parameters.Add(new SqlParameter("@OrderDate", order.OrderDate));
+                command.Parameters.Add(new SqlParameter("@RequiredDate", order.RequiredDate));
+                command.Parameters.Add(new SqlParameter("@ShippedDate", order.ShippedDate));
+                command.Parameters.Add(new SqlParameter("@ShipperID", order.ShipperID));
+                command.Parameters.Add(new SqlParameter("@Freight", order.Freight));
+                command.Parameters.Add(new SqlParameter("@ShipName", order.ShipName));
+                command.Parameters.Add(new SqlParameter("@ShipAddress", order.ShipAddress));
+                command.Parameters.Add(new SqlParameter("@ShipCity", order.ShipCity));
+                command.Parameters.Add(new SqlParameter("@ShipRegion", order.ShipRegion));
+                command.Parameters.Add(new SqlParameter("@ShipPostalCode", order.ShipPostalCode));
+                command.Parameters.Add(new SqlParameter("@ShipCountry", order.ShipCountry));
+
+                OrderID = command.ExecuteScalar().ToString();
+
+                for (int i = 0; i < order.OrderDetails.Count; i++)
+                {
+                    command2 = new SqlCommand(sql2, conn);
+                    command2.Parameters.Add(new SqlParameter("@OrderID",OrderID));
+                    command2.Parameters.Add(new SqlParameter("@ProductID", order.OrderDetails[i].ProductID));
+                    command2.Parameters.Add(new SqlParameter("@UnitPrice", order.OrderDetails[i].UnitPrice));
+                    command2.Parameters.Add(new SqlParameter("@Qty", order.OrderDetails[i].Qty));
+                    command2.ExecuteNonQuery();
+                }
 
 
                 conn.Close();
             }
-            return 0;
+            return Int32.Parse(OrderID);
 
         }
-        
+        public void DeleteOrderDetail(string OrderID)
+        {
+            try
+            {
+                string sql = "DELETE FROM Sales.OrderDetails WHERE OrderID=@OrderID";
+                using (SqlConnection conn = new SqlConnection(this.GetDBConnectionString()))
+                {
+                    conn.Open();
+                    SqlCommand command = new SqlCommand(sql, conn);
+                    command.Parameters.Add(new SqlParameter("@OrderID", OrderID));
+                    command.ExecuteNonQuery();
+                    conn.Close();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+        public string UpdateOrder(Models.Order update)
+        {
+            string sql = "update Sales.Orders set CustomerID=@CustomerID,EmployeeID=@EmployeeID,OrderDate=@OrderDate,RequiredDate=@RequiredDate,ShippedDate=@ShippedDate,ShipperID=@ShipperID, Freight=@Freight,ShipName=@ShipName,ShipAddress=@ShipAddress,ShipCity=@ShipCity,ShipRegion= @ShipRegion,ShipPostalCode= @ShipPostalCode,ShipCountry= @ShipCountry where OrderID =@OrderID";
+            string sql2 = @"INSERT INTO Sales.OrderDetails
+                           (OrderID,ProductID,UnitPrice,Qty) 
+                           VALUES (@OrderID,@ProductID,@UnitPrice,@Qty)";
+            using (SqlConnection conn = new SqlConnection(this.GetDBConnectionString()))
+            {
+                conn.Open();
+                SqlCommand command = new SqlCommand(sql, conn);
+                SqlCommand command2 = new SqlCommand(sql2, conn);
+                command.Parameters.Add(new SqlParameter("@OrderID", update.OrderID));
+                command.Parameters.Add(new SqlParameter("@CustomerID", update.CustomerID));
+                command.Parameters.Add(new SqlParameter("@EmployeeID", update.EmployeeID));
+                command.Parameters.Add(new SqlParameter("@OrderDate", update.OrderDate));
+                command.Parameters.Add(new SqlParameter("@RequiredDate", update.RequiredDate));
+                command.Parameters.Add(new SqlParameter("@ShippedDate", update.ShippedDate));
+                command.Parameters.Add(new SqlParameter("@ShipperID", update.ShipperID));
+                command.Parameters.Add(new SqlParameter("@Freight", update.Freight));
+                command.Parameters.Add(new SqlParameter("@ShipName", update.ShipName));
+                command.Parameters.Add(new SqlParameter("@ShipAddress", update.ShipAddress));
+                command.Parameters.Add(new SqlParameter("@ShipCity", update.ShipCity));
+                command.Parameters.Add(new SqlParameter("@ShipRegion", update.ShipRegion));
+                command.Parameters.Add(new SqlParameter("@ShipPostalCode", update.ShipPostalCode));
+                command.Parameters.Add(new SqlParameter("@ShipCountry", update.ShipCountry));
+                command.ExecuteNonQuery();
+                for (int i = 0; i < update.OrderDetails.Count; i++)
+                {
+                    command2 = new SqlCommand(sql2, conn);
+                    command2.Parameters.Add(new SqlParameter("@OrderID", update.OrderID));
+                    command2.Parameters.Add(new SqlParameter("@ProductID", update.OrderDetails[i].ProductID));
+                    command2.Parameters.Add(new SqlParameter("@UnitPrice", update.OrderDetails[i].UnitPrice));
+                    command2.Parameters.Add(new SqlParameter("@Qty", update.OrderDetails[i].Qty));
+                    command2.ExecuteNonQuery();
+                }
+                conn.Close();
+            }
+            return null;
+        }
+
     }
 }

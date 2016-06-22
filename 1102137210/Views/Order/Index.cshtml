@@ -76,7 +76,7 @@
                             <td>@item.CompanyName</td>
                             <td>@item.OrderDate</td>
                             <td>@item.ShippedDate</td>
-                            <td>修改</td>
+                            <td><a href="../Order/UpdateOrder?OrderID=@item.OrderID">修改</a></td>
                             <td>
                                 <a class="btnDelete" href="#">刪除</a>
                                 <input class="hidOrderId" type="hidden" value='@item.OrderID' />

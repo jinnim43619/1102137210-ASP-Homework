@@ -25,7 +25,7 @@ namespace _1102137210.Models
         /// 客戶代號
         /// </summary>
         
-        public string CustomerID { get; set; }
+        public int CustomerID { get; set; }
         /// <summary>
         /// 客戶名稱
         /// </summary>
@@ -111,6 +111,10 @@ namespace _1102137210.Models
         /// </summary>
         /// 
         public string ShipCountry { get; set; }
+        /// <summary>
+        /// 名
+        /// </summary>
+        public string Lastname { get; set; }
 
         /// <summary>
         /// 訂單明細

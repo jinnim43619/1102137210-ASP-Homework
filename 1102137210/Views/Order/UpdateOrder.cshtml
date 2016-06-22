@@ -9,98 +9,104 @@
 <head>
     <meta name="viewport" content="width=device-width" />
 
-    <title>InsertOrder</title>
+    <title>UpdateOrder</title>
 </head>
 
 <body>
-    @using (Html.BeginForm("InsertOrder", "Order", FormMethod.Post, new { id = "Form2" }))
+    @using (Html.BeginForm("UpdateOrder", "Order", FormMethod.Post, new { id = "Form3" }))
     {
         @Html.AntiForgeryToken()
         @Html.ValidationSummary(true)
-        <div id="InsertOrder">
-            <h1>新增訂單</h1>
-            <table class="table table-bordered table-striped">
 
+        <div>
+            <h3>修改訂單</h3>
+        </div>
+        <div>
+            <table class="table" style="width:75%">
+                <tr>
+                    <td>訂單編號</td>
+                    <td>@Html.TextBoxFor(Models => Models.OrderID, new { Value = ViewBag.orderid, style = "border:0" })</td>
+                </tr>
                 <tr>
                     <td>客戶名稱</td>
                     <td>
-                        @Html.DropDownListFor(model => model.CustomerID, (List<SelectListItem>)ViewBag.Cusdata)
+                        @Html.DropDownListFor(Models => Models.CustomerID, (List<SelectListItem>)ViewData["Cusdata"])
                         @Html.ValidationMessageFor(Models => Models.CustomerID)
                     </td>
                 </tr>
                 <tr>
                     <td>負責員工名稱</td>
                     <td>
-                        @Html.DropDownListFor(model => model.EmployeeID, (List<SelectListItem>)ViewBag.EmpData)
+                        @Html.DropDownListFor(Models => Models.EmployeeID, (List<SelectListItem>)ViewData["EmpData"])
                         @Html.ValidationMessageFor(Models => Models.EmployeeID)
                     </td>
                 </tr>
                 <tr>
-                    <td>訂購日期</td>
+                    <td>訂單日期</td>
                     <td>
-                        @Html.TextBoxFor(model => model.OrderDate, new { @type = "date" })
+                        @Html.TextBoxFor(Models => Models.OrderDate, new { @type = "date", @Value = ViewBag.orderdate })
                         @Html.ValidationMessageFor(Models => Models.OrderDate)
                     </td>
                     <td>需要日期</td>
                     <td>
-                        @Html.TextBoxFor(model => model.RequiredDate, new { @type = "date" })
+                        @Html.TextBoxFor(Models => Models.RequiredDate, new { @type = "date", @Value = ViewBag.requireddate })
                         @Html.ValidationMessageFor(Models => Models.RequiredDate)
                     </td>
                 </tr>
                 <tr>
                     <td>出貨日期</td>
                     <td>
-                        @Html.TextBoxFor(model => model.ShippedDate, new { @type = "date" })
+                        @Html.TextBoxFor(Models => Models.ShippedDate, new { @type = "date", @Value = ViewBag.shippeddate })
                         @Html.ValidationMessageFor(Models => Models.ShippedDate)
                     </td>
                 </tr>
                 <tr>
                     <td>出貨公司名稱</td>
                     <td>
-                        @Html.DropDownListFor(model => model.ShipperID, (List<SelectListItem>)ViewBag.ShipperData)
+                        @Html.DropDownListFor(Models => Models.ShipperID, (List<SelectListItem>)ViewData["ShipperData"])
                         @Html.ValidationMessageFor(Models => Models.ShipperID)
                     </td>
                 </tr>
                 <tr>
                     <td>運費</td>
                     <td>
-                        @Html.TextBoxFor(model => model.Freight,new { onchange = "totalsum()"})
+                        @Html.TextBoxFor(Models => Models.Freight, new { Value = ViewBag.freight, onchange = "totalsum()" })
                         @Html.ValidationMessageFor(Models => Models.Freight)
                     </td>
                 </tr>
                 <tr>
                     <td>出貨國家</td>
                     <td>
-                        @Html.TextBoxFor(model => model.ShipCountry)
+                        @Html.TextBoxFor(Models => Models.ShipCountry, new { Value = ViewBag.shipcountry })
                         @Html.ValidationMessageFor(Models => Models.ShipCountry)
                     </td>
                     <td>出貨城市</td>
                     <td>
-                        @Html.TextBoxFor(model => model.ShipCity)
+                        @Html.TextBoxFor(Models => Models.ShipCity, new { Value = ViewBag.shipcity })
                         @Html.ValidationMessageFor(Models => Models.ShipCity)
                     </td>
                 </tr>
                 <tr>
                     <td>出貨地區</td>
                     <td>
-                        @Html.TextBoxFor(model => model.ShipRegion)
+                        @Html.TextBoxFor(Models => Models.ShipRegion, new { Value = ViewBag.shipregion })
                         @Html.ValidationMessageFor(Models => Models.ShipRegion)
                     </td>
                     <td>郵遞區號</td>
                     <td>
-                        @Html.TextBoxFor(model => model.ShipPostalCode)
+                        @Html.TextBoxFor(Models => Models.ShipPostalCode, new { Value = ViewBag.shippostalcode })
                         @Html.ValidationMessageFor(Models => Models.ShipPostalCode)
                     </td>
                 </tr>
                 <tr>
                     <td>出貨地址</td>
                     <td>
-                        @Html.TextBoxFor(model => model.ShipAddress)
+                        @Html.TextBoxFor(Models => Models.ShipAddress, new { Value = ViewBag.shipaddress })
                         @Html.ValidationMessageFor(Models => Models.ShipAddress)
                     </td>
                     <td>出貨說明</td>
                     <td>
-                        @Html.TextBoxFor(model => model.ShipName)
+                        @Html.TextBoxFor(Models => Models.ShipName, new { Value = ViewBag.shipname })
                         @Html.ValidationMessageFor(Models => Models.ShipName)
                     </td>
                 </tr>
@@ -112,39 +118,44 @@
                     <td></td>
                     <td>
                         <input type="submit" value="存檔" />
+
+                        <a class="btnDelete" href="#" onclick="location.href = '../Index'">刪除</a>
+                        <input class="hidOrderId" type="hidden" value='@ViewBag.orderid' />
                         @Html.ActionLink("回前一頁", "Index")
                     </td>
                 </tr>
             </table>
         </div>
+        <div><h3>訂單明細</h3></div>
         <div id="InsertOrderDetail">
-                <a id="addNewDetial" href="#">新增一筆</a>
-                <table class="table table-bordered table-striped">
-                    <tr>
-                        <td>商品</td>
-                        <td>單價</td>
-                        <td>數量</td>
-                        <td>小計</td>
-                        <td></td>
-                    </tr>
+            <a id="addNewDetial" href="#">新增一筆</a>
+            <table class="table table-bordered table-striped">
+                <tr>
+                    <td>商品</td>
+                    <td>單價</td>
+                    <td>數量</td>
+                    <td>小計</td>
+                    <td></td>
+                </tr>
 
-                    <tbody id="tbContent">
-                        @for (int i = 0; i < Model.OrderDetails.Count; i++)
-                        {
-                            <tr>
-                                <td>@Html.DropDownListFor(m => Model.OrderDetails[i].ProductID, (List<SelectListItem>)ViewBag.ProductData, new { @class = "ProductID",@onchange = "GetPrice(this)" })</td>
-                                <td>@Html.TextBoxFor(m => Model.OrderDetails[i].UnitPrice, new { @class = "UnitPrice",@id = "UnitPrice", Value = ViewBag.PriceData[i].Value, @onchange = "change(this)" })</td>
-                                <td>@Html.TextBoxFor(m => Model.OrderDetails[i].Qty, new { @class = "Qty", onchange = "Count(this)" })</td>
-                                <td><input type="text" class="detailsum" disabled></td>
-                                <td>
-                                    <button type="button" class="btnRemove">取消</button>
-                                </td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
-            </div>
+                <tbody id="tbContent">
+                    @for (int i = 0; i < ViewBag.Orderdetail.Count; i++)
+                    {
+                        <tr>
+                            <td>@Html.DropDownListFor(m => Model.OrderDetails[i].ProductID, (List<SelectListItem>)ViewBag.ProductData[i], new { @class = "ProductID", @onchange = "GetPrice(this)"})</td>
+                            <td>@Html.TextBoxFor(m => Model.OrderDetails[i].UnitPrice, new { @class = "UnitPrice", @id = "UnitPrice", Value = ViewBag.Orderdetail[i].UnitPrice, @onchange = "change(this)" })</td>
+                            <td>@Html.TextBoxFor(m => Model.OrderDetails[i].Qty, new { @class = "Qty", onchange = "Count(this)" , Value =ViewBag.Orderdetail[i].Qty })</td>
+                            <td><input type="text" class="detailsum" disabled></td>
+                            <td>
+                                <button type="button" class="btnRemove">取消</button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
     }
+
     @section scripts{
 
         <script type="text/javascript">
@@ -186,7 +197,6 @@
             var ordersum = 0;
             var total = 0;
             function GetPrice(item) {
-                debugger;
                 var price=[];
                 var array = @Html.Raw(Json.Encode(@ViewBag.PriceData));
 
@@ -201,7 +211,7 @@
                 }else{
                     total=0;
                 }
-            
+
                 $(item).parent().next('td').next('td').next('td').children().val(total);
                 totalsum();
             }
@@ -232,12 +242,12 @@
                     ordersum+=parseInt($("#Freight").val());
                     document.getElementById("ordersum").value=ordersum;
                 }else{
-                
+
                     document.getElementById("ordersum").value=ordersum;
                 }
             }
         </script>
         }
-</body>
+    </body>
 
 </html>

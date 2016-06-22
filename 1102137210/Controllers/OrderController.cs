@@ -42,7 +42,7 @@ namespace _1102137210.Controllers
             return View("Index");
         }
         /// <summary>
-        /// 新增訂單
+        /// 新增訂單頁面
         /// </summary>
         /// <returns></returns>
         public ActionResult InsertOrder()
@@ -70,7 +70,7 @@ namespace _1102137210.Controllers
                 try
                 {
                     OrderService.InsertOrder(order);
-                    return RedirectToAction("InsertOrder");
+                    return RedirectToAction("Index");
                 }
                 catch (Exception ex)
                 {
@@ -102,5 +102,87 @@ namespace _1102137210.Controllers
 
 
         }
+        /// <summary>
+        /// 修改訂單頁面
+        /// </summary>
+        /// <param name="OrderID"></param>
+        /// <returns></returns>
+        public ActionResult UpdateOrder(string OrderID)
+        {
+            ViewBag.select1 = GetInfo.GetOrderInfo(OrderID);
+            foreach (var item in (List<_1102137210.Models.Order>)ViewBag.select1)
+            {
+                ViewBag.orderid = item.OrderID;
+                ViewBag.customer = item.CompanyName;
+                ViewBag.customerid = item.CustomerID.ToString();
+                ViewBag.lastname = item.Lastname;
+                ViewBag.employeeid = item.EmployeeID.ToString();
+                ViewBag.orderdate = item.OrderDate;
+                ViewBag.requireddate = item.RequiredDate;
+                ViewBag.shippeddate = item.ShippedDate;
+                ViewBag.shippername = item.ShipperName;
+                ViewBag.shipperid = item.ShipperID.ToString();
+                ViewBag.freight = item.Freight;
+                ViewBag.shipname = item.ShipName;
+                ViewBag.shipaddress = item.ShipAddress;
+                ViewBag.shipcity = item.ShipCity;
+                ViewBag.shipregion = item.ShipRegion;
+                ViewBag.shippostalcode = item.ShipPostalCode;
+                ViewBag.shipcountry = item.ShipCountry;
+            }
+            List<SelectListItem> CustomersData = this.GetInfo.GetCus();
+            ViewBag.Cusdata = CustomersData;
+            ViewBag.EmpData = this.GetInfo.GetEmp();
+            ViewBag.ShipperData = this.GetInfo.GetShipper();
+            ViewBag.ProductData = this.GetInfo.GetProduct();
+            
+            List<SelectListItem> UnitPrice = this.GetProductInfo.GetPrice();
+            ViewBag.PriceData = UnitPrice;
+            ViewBag.orderdetail = GetInfo.GetOrderDetail(OrderID);
+
+            List<SelectListItem> ProductsData = new List<SelectListItem>();
+            List<List<SelectListItem>> getProductList = new List<List<SelectListItem>>();
+            List<Products> result3 = GetInfo.GetProductName();
+            for (int i = 0; i < ViewBag.orderdetail.Count; i++)
+            {
+                foreach (var item in result3)
+                {
+                    ProductsData.Add(new SelectListItem()
+                    {
+                        Text = item.ProductName,
+                        Value = item.ProductID.ToString(),
+                        Selected = item.ProductID.Equals(ViewBag.orderdetail[i].ProductID)
+                    });
+                    ViewData["ProductsData"] = ProductsData;
+                }
+                getProductList.Add(new List<SelectListItem>(ProductsData));
+                ProductsData.Clear();
+            }
+
+            ViewBag.ProductData = getProductList;
+
+            return View();
+        }
+        [HttpPost()]
+        public ActionResult UpdateOrder(Models.Order update)
+        {
+            if (ModelState.IsValid)
+            {
+
+                try
+                {
+                    OrderService.DeleteOrderDetail(update.OrderID.ToString());
+                    OrderService.UpdateOrder(update);
+                    return RedirectToAction("Index");
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+
+            }
+            return RedirectToAction("UpdateOrder");
+        }
+
     }
 }
