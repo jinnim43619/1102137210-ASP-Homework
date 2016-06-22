@@ -19,10 +19,10 @@ namespace _1102137210.Models
             return
                 System.Configuration.ConfigurationManager.ConnectionStrings["DBConnectionString"].ConnectionString.ToString();
         }
-        public List<SelectListItem> GetPrice(string ProductID)
+        public List<SelectListItem> GetPrice()
         {
             DataTable dt = new DataTable();
-            string sql = "Select UnitPrice From Production.Products Where ProductID=@ProductID";
+            string sql = "Select UnitPrice From Production.Products";
             using (SqlConnection conn = new SqlConnection(this.GetDBConnectionString()))
             {
                 conn.Open();
@@ -37,12 +37,16 @@ namespace _1102137210.Models
         private List<SelectListItem> MapCodeData(DataTable dt)
         {
             List<SelectListItem> result = new List<SelectListItem>();
-
+            result.Add(new SelectListItem()
+            {
+                Value = "",
+            });
             foreach (DataRow row in dt.Rows)
             {
+                
                 result.Add(new SelectListItem()
                 {
-                    Text = row["UnitPrice"].ToString(),
+                    Value = row["UnitPrice"].ToString(),
                 });
             }
             return result;

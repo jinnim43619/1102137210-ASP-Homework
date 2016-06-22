@@ -64,7 +64,7 @@
                 <tr>
                     <td>運費</td>
                     <td>
-                        @Html.TextBoxFor(model => model.Freight)
+                        @Html.TextBoxFor(model => model.Freight,new { onchange = "totalsum()"})
                         @Html.ValidationMessageFor(Models => Models.Freight)
                     </td>
                 </tr>
@@ -106,7 +106,7 @@
                 </tr>
                 <tr>
                     <td>訂單金額總計</td>
-                    <td></td>
+                    <td><input type="text" id="ordersum" value="" disabled></td>
                 </tr>
                 <tr>
                     <td></td>
@@ -117,7 +117,7 @@
                 </tr>
             </table>
         </div>
-            @*<div id="InsertOrderDetail">
+        <div id="InsertOrderDetail">
                 <a id="addNewDetial" href="#">新增一筆</a>
                 <table class="table table-bordered table-striped">
                     <tr>
@@ -132,10 +132,10 @@
                         @for (int i = 0; i < Model.OrderDetails.Count; i++)
                 {
                             <tr>
-                                <td>@Html.DropDownListFor(m => Model.OrderDetails[i].ProductID, (List<SelectListItem>)ViewBag.ProductData, new { @class = "ProductID" })</td>
-                                <td>@Html.TextBoxFor(m => Model.OrderDetails[i].UnitPrice, new { @class = "UnitPrice" })</td>
-                                <td>@Html.TextBoxFor(m => Model.OrderDetails[i].Qty, new { @class = "Qty" })</td>
-                                <td type="text" id="sum" disabled></td>
+                                <td>@Html.DropDownListFor(m => Model.OrderDetails[i].ProductID, (List<SelectListItem>)ViewBag.ProductData, new { @class = "ProductID",@onchange = "GetPrice(this)" })</td>
+                                <td>@Html.TextBoxFor(m => Model.OrderDetails[i].UnitPrice, new { @class = "UnitPrice",@id = "UnitPrice", Value = ViewBag.PriceData[i].Value, @onchange = "change(this)" })</td>
+                                <td>@Html.TextBoxFor(m => Model.OrderDetails[i].Qty, new { @class = "Qty", onchange = "Count(this)" })</td>
+                                <td><input type="text" class="detailsum" disabled></td>
                                 <td>
                                     <button type="button" class="btnRemove">取消</button>
                                 </td>
@@ -143,7 +143,7 @@
                         }
                     </tbody>
                 </table>
-            </div>*@
+            </div>
     }
     @section scripts{
 
@@ -183,7 +183,59 @@
                 });
                 return false;
             });
+            var ordersum = 0;
+            var total = 0;
+            function GetPrice(item) {
+                debugger;
+                var price=[];
+                var array = @Html.Raw(Json.Encode(@ViewBag.PriceData));
 
+                for(var i = 0 ;i<array.length;i++){
+                    price[i]=array[i].Value;
+                }
+                $(item).parent().next('td').children().val(price[item.value-1]);
+                var unitprice=$(item).parent().next('td').children().val();
+                var qty=$(item).parent().next('td').next('td').children().val();
+                if(qty != null){
+                    total=unitprice*qty;
+                }else{
+                    total=0;
+                }
+            
+                $(item).parent().next('td').next('td').next('td').children().val(total);
+                totalsum();
+            }
+            //更改單價時，小計跟著變化
+            function change(item){
+                var unitprice=$(item).closest("input:text").val();
+                var qty=$(item).parent().next('td').children().val();
+                total=unitprice*qty;
+                $(item).parent().next('td').next('td').children().val(total);
+                totalsum();
+            }
+            //更改數量時，小計跟著變化
+            function Count(item){
+                var unitprice=$(item).parent().prev('td').children().val();
+                var qty=$(item).closest("input:text").val();
+                total=Math.round(unitprice*qty,1);
+                $(item).parent().next('td').children().val(total);
+                totalsum();
+            }
+            function totalsum(){
+                ordersum = 0;
+                var detailsum = document.getElementsByClassName("detailsum");
+                for(var s=0;s<detailsum.length;s++){
+                    ordersum+=parseInt(detailsum[s].value);
+                    console.log(ordersum);
+                }
+                if($("#Freight").val() != ""){
+                    ordersum+=parseInt($("#Freight").val());
+                    document.getElementById("ordersum").value=ordersum;
+                }else{
+                
+                    document.getElementById("ordersum").value=ordersum;
+                }
+            }
         </script>
     }
 </body>

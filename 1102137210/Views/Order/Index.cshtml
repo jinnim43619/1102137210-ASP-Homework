@@ -11,83 +11,83 @@
     <title>Index</title>
 </head>
 <body>
-@using (Html.BeginForm("Index", "Order", FormMethod.Post, new { id = "Form1" }))
-{
-    <div>
-        <h1>訂單查詢</h1>
+    @using (Html.BeginForm("Index", "Order", FormMethod.Post, new { id = "Form1" }))
+    {
+        <div>
+            <h1>訂單查詢</h1>
 
-        <table class="table table-bordered table-striped">
-            <tr>
-                <td>訂單編號</td>
-                <td>@Html.TextBoxFor(model => model.OrderID)</td>
-            </tr>
-            <tr>
-                <td>客戶名稱</td>
-                <td>@Html.TextBoxFor(model => model.CompanyName)</td>
-            </tr>
-            <tr>
-                <td>負責員工</td>
-                <td>@Html.DropDownListFor(model => model.EmployeeID, (List<SelectListItem>)ViewBag.EmpData)</td>
-            </tr>
-            <tr>
-                <td>出貨公司</td>
-                <td>@Html.DropDownListFor(model => model.ShipperID, (List<SelectListItem>)ViewBag.ShipperData)</td>
-            </tr>
-            <tr>
-                <td>訂購日期</td>
-                <td>@Html.TextBoxFor(model => model.OrderDate, new { @type = "date" })</td>
-                <td>出貨日期</td>
-                <td>@Html.TextBoxFor(model => model.ShippedDate, new { @type = "date" })</td>
-            </tr>
-            <tr>
-                <td>需要日期</td>
-                <td>@Html.TextBoxFor(model => model.RequiredDate, new { @type = "date" })</td>
-            </tr>
-            <tr>
-                <td></td>
-                <td>
-                    <input type="submit" value="查詢" />
-                    <input type="reset" value="清除" />
-                    @Html.ActionLink("新增訂單", "InsertOrder")
-                </td>
-            </tr>
-        </table>
-    </div>
-
-    <div >
-
-
-        @if (ViewBag.Order != null)
-        {
-            <h1>查詢結果</h1>
             <table class="table table-bordered table-striped">
                 <tr>
                     <td>訂單編號</td>
-                    <td>客戶名稱</td>
-                    <td>訂購日期</td>
-                    <td>發貨日期</td>
-                    <td></td>
-                    <td></td>
+                    <td>@Html.TextBoxFor(model => model.OrderID)</td>
                 </tr>
-                @foreach (var item in ViewBag.Order)
-                {
-                    <tr id='@item.OrderID'>
-                        <td>@item.OrderID</td>
-                        <td>@item.CompanyName</td>
-                        <td>@item.OrderDate</td>
-                        <td>@item.ShippedDate</td>
-                        <td>修改</td>
-                        <td>
-                        <a class="btnDelete" href="#">刪除</a>
-                        <input class="hidOrderId" type="hidden" value='@item.OrderID' />
-                        </td>
-                    </tr>
-                }
-
+                <tr>
+                    <td>客戶名稱</td>
+                    <td>@Html.TextBoxFor(model => model.CompanyName)</td>
+                </tr>
+                <tr>
+                    <td>負責員工</td>
+                    <td>@Html.DropDownListFor(model => model.EmployeeID, (List<SelectListItem>)ViewBag.EmpData)</td>
+                </tr>
+                <tr>
+                    <td>出貨公司</td>
+                    <td>@Html.DropDownListFor(model => model.ShipperID, (List<SelectListItem>)ViewBag.ShipperData)</td>
+                </tr>
+                <tr>
+                    <td>訂購日期</td>
+                    <td>@Html.TextBoxFor(model => model.OrderDate, new { @type = "date" })</td>
+                    <td>出貨日期</td>
+                    <td>@Html.TextBoxFor(model => model.ShippedDate, new { @type = "date" })</td>
+                </tr>
+                <tr>
+                    <td>需要日期</td>
+                    <td>@Html.TextBoxFor(model => model.RequiredDate, new { @type = "date" })</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>
+                        <input type="submit" value="查詢" />
+                        <input type="reset" value="清除" />
+                        @Html.ActionLink("新增訂單", "InsertOrder")
+                    </td>
+                </tr>
             </table>
-        }
-    </div>
-}
+        </div>
+
+        <div>
+
+
+            @if (ViewBag.Order != null)
+            {
+                <h1>查詢結果</h1>
+                <table class="table table-bordered table-striped">
+                    <tr>
+                        <td>訂單編號</td>
+                        <td>客戶名稱</td>
+                        <td>訂購日期</td>
+                        <td>發貨日期</td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    @foreach (var item in ViewBag.Order)
+                    {
+                        <tr id='@item.OrderID'>
+                            <td>@item.OrderID</td>
+                            <td>@item.CompanyName</td>
+                            <td>@item.OrderDate</td>
+                            <td>@item.ShippedDate</td>
+                            <td>修改</td>
+                            <td>
+                                <a class="btnDelete" href="#">刪除</a>
+                                <input class="hidOrderId" type="hidden" value='@item.OrderID' />
+                            </td>
+                        </tr>
+                    }
+
+                </table>
+            }
+        </div>
+    }
     <script type="text/javascript">
 
 

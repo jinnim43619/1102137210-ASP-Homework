@@ -52,6 +52,8 @@ namespace _1102137210.Controllers
             ViewBag.EmpData = this.GetInfo.GetEmp();
             ViewBag.ShipperData = this.GetInfo.GetShipper();
             ViewBag.ProductData = this.GetInfo.GetProduct();
+            List<SelectListItem> UnitPrice = this.GetProductInfo.GetPrice();
+            ViewBag.PriceData = UnitPrice;
             return View(new Models.Order());
         }
         /// <summary>
@@ -90,27 +92,6 @@ namespace _1102137210.Controllers
             try
             {
                 OrderService.DeleteOrderById(DeleteOrderId);
-                return this.Json(true);
-            }
-            catch (Exception)
-            {
-
-                return this.Json(false);
-            }
-
-
-        }
-        /// <summary>
-        /// 取得商品單價
-        /// </summary>
-        /// <param name="ProductID"></param>
-        /// <returns></returns>
-        [HttpPost()]
-        public JsonResult GetPrice(string ProductID)
-        {
-            try
-            {
-                GetProductInfo.GetPrice(ProductID);
                 return this.Json(true);
             }
             catch (Exception)
